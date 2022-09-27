@@ -5,7 +5,7 @@ using PublisherDomain;
 
 PubContext _context = new PubContext();
 
-RetrieveAndUpdateMultipleAuthors();
+InsertMultipleAuthors();
 
 void GetAuthors()
 {
@@ -120,6 +120,75 @@ void RetrieveAndUpdateMultipleAuthors()
   _context.ChangeTracker.DetectChanges();
   Console.WriteLine("After:" + _context.ChangeTracker.DebugView.ShortView);
    
+  _context.SaveChanges();
+}
+
+void CoordinateRetrieveAndUpdateAuthor()
+{
+  var author = FindThatAuthor(3);
+  if (author?.FirstName=="Julie")
+  {
+    author.FirstName = "Julia";
+    SaveThatAuthor(author);
+  }
+}
+
+Author FindThatAuthor(int authorId)
+{
+  using var shortLivedContext = new PubContext();
+  return shortLivedContext.Authors.Find(authorId);
+}
+
+void SaveThatAuthor(Author author)
+{
+  using var anotherShortLivedContext = new PubContext();
+  anotherShortLivedContext.Authors.Update(author);
+  anotherShortLivedContext.SaveChanges();
+}
+
+void DeleteAnAuthor()
+{
+  var extraJL = _context.Authors.Find(1);
+  if (extraJL!=null)
+  {
+    _context.Authors.Remove(extraJL);
+    _context.SaveChanges();
+  }
+}
+
+void InsertMultipleAuthors()
+{
+	var authorList = new Author[] {
+    new Author { FirstName = "Ruth", LastName = "Ozeki" },
+    new Author { FirstName = "Sofia", LastName = "Segovia" },
+    new Author { FirstName = "Ursula K.", LastName = "LeGuin" },
+    new Author { FirstName = "Hugh", LastName = "Howey" },
+    new Author { FirstName = "Isabelle", LastName = "Allende" }
+  };
+
+	_context.Authors.AddRange(authorList);
+
+	_context.SaveChanges();
+}
+
+void InsertMultipleAuthorsPassedIn(List<Author> listOfAuthors)
+{ 
+  _context.AddRange(listOfAuthors);
+  _context.SaveChanges();
+}
+
+void BulkAddUpdate()
+{
+	var newAuthors = new Author[] {
+		new Author { FirstName = "Tsisi", LastName = "Dangaremga" },
+		new Author { FirstName = "Lisa", LastName = "See" },
+		new Author { FirstName = "Zhang", LastName = "Ling" },
+		new Author { FirstName = "Marilyne", LastName = "Robinson" }
+	};
+
+  _context.Authors.AddRange(newAuthors);
+  var book = _context.Books.Find(2);
+  book.Title = "Programming Entity Framework 2nd Edition";
   _context.SaveChanges();
 }
 
