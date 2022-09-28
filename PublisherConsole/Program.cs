@@ -11,16 +11,11 @@ using PublisherDomain;
 
 PubContext _context = new PubContext();
 
-//InsertMultipleAuthors();
+//GetAuthors();
 
 void GetAuthors()
 {
-  using var context = new PubContext();
-  var authors = context.Authors.ToList();
-  foreach (var author in authors)
-  {
-    Console.WriteLine(author.FirstName + " " + author.LastName);
-  }
+  var authors = _context.Authors.ToList();
 }
 
 void AddAuthor()

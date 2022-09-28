@@ -10,7 +10,7 @@ public class PubContext:DbContext
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
   {
     //optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=PubDatabase");
-    optionsBuilder.UseSqlite("Data Source=PubDatabase.db");
+    optionsBuilder.UseSqlite("Data Source=PubDatabase.db").LogTo(Console.WriteLine);
   }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,6 +34,11 @@ public class PubContext:DbContext
 		};
 
     modelBuilder.Entity<Book>().HasData(someBooks);
+
+    /*modelBuilder.Entity<Author>()
+      .HasMany(a => a.Books)
+      .WithOne(b => b.Author)
+      .HasForeignKey(b => b.AuthorFK);*/
 
   }
 }
