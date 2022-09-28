@@ -3,9 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using PublisherData;
 using PublisherDomain;
 
+
+/*using (PubContext context = new PubContext())
+{
+  context.Database.EnsureCreated();
+}*/
+
 PubContext _context = new PubContext();
 
-InsertMultipleAuthors();
+//InsertMultipleAuthors();
 
 void GetAuthors()
 {
