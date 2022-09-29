@@ -11,7 +11,77 @@ using PublisherDomain;
 
 PubContext _context = new PubContext();
 
-GetAuthors();
+EagerLoadBooksWithAuthors();
+
+void EagerLoadBooksWithAuthors()
+{
+  var pubDateStart = new DateTime(2010, 1, 1);
+  var authors = _context.Authors
+    .Include(a => a.Books
+                  .Where(b => b.PublishDate >= pubDateStart)
+                  .OrderBy(b => b.Title))
+    .ToList();
+
+  authors.ForEach(a=>
+  {
+    Console.WriteLine($"{a.LastName} ({a.Books.Count})");
+    a.Books.ForEach(b=>Console.WriteLine("    "+b.Title));
+  });
+
+  Console.ReadLine();
+}
+
+void AddNewBookToExstingAuthorInMemoryViaBook()
+{
+  var book = new Book
+  {
+    Title = "Shift",
+    PublishDate = new DateTime(2012, 1, 1),
+    AuthorId = 5
+  };
+  _context.Books.Add(book);
+  _context.SaveChanges();
+}
+
+
+void AddNewBookToExstingAuthorInMemort()
+{
+  var author = _context.Authors.FirstOrDefault(a => a.LastName == "Howey");
+  if (author!=null)
+  {
+    author.Books.Add(
+      new Book { Title="Wool", PublishDate=new DateTime(2012,1,1)}
+      );
+  }
+
+  _context.SaveChanges();
+}
+
+void InsertNewAuthorWith2NewBooks()
+{
+  var author = new Author { FirstName = "Don", LastName = "Jones" };
+  author.Books.AddRange(new List<Book>
+  {
+    new Book {Title = "The Never", PublishDate = new DateTime(2019, 12, 1)},
+    new Book {Title = "Alabaster", PublishDate = new DateTime(2019, 4, 1)}
+  });
+
+  _context.Authors.Add(author);
+  _context.SaveChanges();
+}
+
+void InsertNewAuthorWithNewBook()
+{
+  var author = new Author { FirstName = "Lynda", LastName = "Rutledge" };
+  author.Books.Add(new Book
+  {
+    Title="West With Giraffes",
+    PublishDate=new DateTime (2021,2,1)
+  });
+
+  _context.Authors.Add(author);
+  _context.SaveChanges();
+}
 
 void GetAuthors()
 {
