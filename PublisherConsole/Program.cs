@@ -11,11 +11,12 @@ using PublisherDomain;
 
 PubContext _context = new PubContext();
 
-//GetAuthors();
+GetAuthors();
 
 void GetAuthors()
 {
-  var authors = _context.Authors.ToList();
+  var name = "Ozeki";
+  var authors = _context.Authors.Where(a=>a.LastName==name).ToList();
 }
 
 void AddAuthor()
