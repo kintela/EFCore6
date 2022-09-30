@@ -11,7 +11,27 @@ using PublisherDomain;
 
 PubContext _context = new PubContext();
 
-EagerLoadBooksWithAuthors();
+ExplicitLoadCollection();
+
+void ExplicitLoadCollection()
+{
+  var author = _context.Authors.FirstOrDefault(a => a.LastName == "Lerman");
+  _context.Entry(author).Collection(a => a.Books).Load();
+}
+
+void Projections()
+{
+  var unknownTypes = _context.Authors
+    .Select(a => new
+    {
+      AuthorId = a.AuthorId,
+      Name = a.FirstName.First() + "" + a.LastName,
+      Books=a.Books
+    })
+    .ToList();
+
+  var debugview = _context.ChangeTracker.DebugView.ShortView;
+}
 
 void EagerLoadBooksWithAuthors()
 {
