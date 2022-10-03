@@ -11,7 +11,38 @@ using PublisherDomain;
 
 PubContext _context = new PubContext();
 
-ExplicitLoadCollection();
+CascadeDeleteInActionWhenTracked();
+
+void CascadeDeleteInActionWhenTracked()
+{
+  var author = _context.Authors.Include(a => a.Books)
+    .FirstOrDefault(a => a.AuthorId == 7);
+  _context.Authors.Remove(author);
+  var state = _context.ChangeTracker.DebugView.ShortView;
+  _context.SaveChanges();
+
+
+}
+
+void ModifyingRelatedDataWhenNotTracked()
+{
+  var author = _context.Authors.Include(a => a.Books)
+    .FirstOrDefault(a => a.AuthorId == 5);
+
+  author.Books[0].BasePrice = (decimal)12.00;
+
+  var newContext = new PubContext();
+  newContext.Entry(author.Books[0]).State = EntityState.Modified;
+  var state = newContext.ChangeTracker.DebugView.ShortView;
+  newContext.SaveChanges();
+}
+
+void FilterUsingRelatedData()
+{
+  var recentAuthors = _context.Authors
+    .Where(a => a.Books.Any(b => b.PublishDate.Year >= 2015))
+    .ToList();
+}
 
 void ExplicitLoadCollection()
 {
