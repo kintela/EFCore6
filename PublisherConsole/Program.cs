@@ -4,14 +4,14 @@ using PublisherData;
 using PublisherDomain;
 
 
-/*using (PubContext context = new PubContext())
+using (PubContext context = new PubContext())
 {
   context.Database.EnsureCreated();
-}*/
+}
 
 PubContext _context = new PubContext();
 
-CascadeDeleteInActionWhenTracked();
+//CascadeDeleteInActionWhenTracked();
 
 void CascadeDeleteInActionWhenTracked()
 {

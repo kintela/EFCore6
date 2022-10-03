@@ -10,8 +10,8 @@ public class PubContext:DbContext
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
   {
-    //optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=PubDatabase");
-    optionsBuilder.UseSqlite("Data Source=PubDatabase.db")
+    optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=PubDatabase")
+    //optionsBuilder.UseSqlite("Data Source=PubDatabase.db")
       .LogTo(Console.WriteLine,
         new[] { DbLoggerCategory.Database.Command.Name},
         LogLevel.Information)
