@@ -11,7 +11,18 @@ using (PubContext context = new PubContext())
 
 PubContext _context = new PubContext();
 
-//CascadeDeleteInActionWhenTracked();
+ConnectExistingArtistAndCoverObjects();
+
+void ConnectExistingArtistAndCoverObjects()
+{
+  var artistA = _context.Artists.Find(1);
+  var artistB = _context.Artists.Find(2);
+  var coverA = _context.Covers.Find(1);
+
+  coverA.Artists.Add(artistA);
+  coverA.Artists.Add(artistB);
+  _context.SaveChanges();
+}
 
 void CascadeDeleteInActionWhenTracked()
 {
