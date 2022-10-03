@@ -58,10 +58,27 @@ public class PubContext:DbContext
     modelBuilder.Entity<Cover>().HasData(someCovers);
 
 
-    /*modelBuilder.Entity<Author>()
-      .HasMany(a => a.Books)
-      .WithOne(b => b.Author)
-      .HasForeignKey(b => b.AuthorFK);*/
+    //example of mapping skip navigation with payload
+    modelBuilder.Entity<Artist>()
+        .HasMany(a => a.Covers)
+        .WithMany(c => c.Artists)
+        .UsingEntity<CoverAssignment>(
+           join => join
+            .HasOne<Cover>()
+            .WithMany()
+            .HasForeignKey(ca => ca.CoverId),
+           join => join
+            .HasOne<Artist>()
+            .WithMany()
+            .HasForeignKey(ca => ca.ArtistId));
+    //modelBuilder.Entity<CoverAssignment>()
+                //.Property(ca => ca.DateCreated).HasDefaultValueSql();
+    modelBuilder.Entity<CoverAssignment>()
+                 .Property(ca => ca.CoverId).HasColumnName("CoversCoverId");
+    modelBuilder.Entity<CoverAssignment>()
+                 .Property(ca => ca.ArtistId).HasColumnName("ArtistsArtistId");
+
+
 
   }
 }

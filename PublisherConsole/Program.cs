@@ -13,6 +13,105 @@ PubContext _context = new PubContext();
 
 ConnectExistingArtistAndCoverObjects();
 
+void ReassignCover()
+{
+  var coverWithArtist4 = _context.Covers
+    .Include(c => c.Artists.Where(a => a.ArtistId == 4))
+    .FirstOrDefault(c => c.CoverId == 6);
+
+  coverWithArtist4.Artists.RemoveAt(0);
+  var artist3 = _context.Artists.Find(3);
+
+  coverWithArtist4.Artists.Add(artist3);
+
+  _context.ChangeTracker.DetectChanges();
+  var debugView = _context.ChangeTracker.DebugView.ShortView;
+  _context.SaveChanges();
+}
+
+void UnAssignAnArtistFromACover()
+{
+  var coverWithArtist = _context.Covers
+    .Include(c => c.Artists.Where(a => a.ArtistId == 1))
+    .FirstOrDefault(c => c.CoverId == 1);
+
+  coverWithArtist.Artists.RemoveAt(0);
+  _context.ChangeTracker.DetectChanges();
+  var debugView = _context.ChangeTracker.DebugView.ShortView;
+  _context.SaveChanges();
+}
+
+void RetrieveAllArtistsWithTheirCovers()
+{
+  var artistsWithCovers = _context.Artists.Include(a => a.Covers).ToList();
+
+  artistsWithCovers.ForEach(a =>
+  {
+    Console.WriteLine($"{a.FirstName} {a.LastName}, Designs to work on:");
+    var primaryArtistId = a.ArtistId;
+    if (a.Covers.Count()==0)
+    {
+      Console.WriteLine(" No Covers");
+    }
+    else
+    {
+      a.Covers.ForEach(c=>
+      {
+        string collaborators = "";
+        c.Artists.Where(ca => ca.ArtistId != primaryArtistId).ToList()
+        .ForEach(ca => collaborators += $"{ca.FirstName} {ca.LastName}");
+        if (collaborators.Length>0)
+        {
+          collaborators = $"(with {collaborators})";
+        }
+        Console.WriteLine($"   *{c.DesignIdeas} {collaborators}");
+      });
+    }
+  });
+
+  Console.ReadLine();
+}
+
+void retrieveAllArtistsWhoHaveCovers()
+{
+  var artistsWithCovers = _context.Artists.Where(a => a.Covers.Any()).ToList();
+}
+
+void RetrieveAllArtistsWithTeirsCovers()
+{
+  var artistsWithCovers = _context.Artists.Include(a => a.Covers).ToList();
+}
+
+void RetrieveACoverWithItsArtists()
+{
+  var coverWithArtists = _context.Covers.Include(c => c.Artists).FirstOrDefault(c => c.CoverId == 1);
+}
+
+void RetrieveAnArtistWithTheirCovers()
+{
+  var artistWithCovers = _context.Artists.Include(a => a.Covers).FirstOrDefault(a => a.ArtistId == 1);
+}
+
+void CreateNewCoverAndArtistTogether()
+{
+  var newArtist = new Artist { FirstName = "Kir", LastName = "Talmage" };
+  var newCover = new Cover { DesignIdeas = "We like birds!" };
+
+  newArtist.Covers.Add(newCover);
+  _context.Artists.Add(newArtist);
+  _context.SaveChanges();
+}
+
+void CreateNewCoverWithExistingArtist()
+{
+  var artistA = _context.Artists.Find(1);
+  var cover = new Cover { DesignIdeas = "Author has provided a photo" };
+
+  cover.Artists.Add(artistA);
+  _context.Covers.Add(cover);
+  _context.SaveChanges();
+}
+
 void ConnectExistingArtistAndCoverObjects()
 {
   var artistA = _context.Artists.Find(1);
