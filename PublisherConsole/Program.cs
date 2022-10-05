@@ -11,7 +11,7 @@ using (PubContext context = new PubContext())
 
 PubContext _context = new PubContext();
 
-ConnectExistingArtistAndCoverObjects();
+//ConnectExistingArtistAndCoverObjects();
 
 void ReassignCover()
 {

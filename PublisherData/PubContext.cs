@@ -12,8 +12,8 @@ public class PubContext:DbContext
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
   {
-    optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=PubDatabase")
-    //optionsBuilder.UseSqlite("Data Source=PubDatabase.db")
+    //optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=PubDatabase")
+    optionsBuilder.UseSqlite("Data Source=PubDatabase.db")
       .LogTo(Console.WriteLine,
         new[] { DbLoggerCategory.Database.Command.Name},
         LogLevel.Information)
@@ -50,9 +50,9 @@ public class PubContext:DbContext
     modelBuilder.Entity<Artist>().HasData(someArtists);
 
     var someCovers = new Cover[] {
-      new Cover{ CoverId=1, DesignIdeas="How about a left hand in the dark?", DigitalOnly=false},
-      new Cover{ CoverId=2, DesignIdeas="Should we put a clock?", DigitalOnly=true},
-      new Cover{ CoverId=3, DesignIdeas="A big ear in the clocks?", DigitalOnly=false}
+      new Cover{ CoverId=1,BookId=3, DesignIdeas="How about a left hand in the dark?", DigitalOnly=false},
+      new Cover{ CoverId=2,BookId=2, DesignIdeas="Should we put a clock?", DigitalOnly=true},
+      new Cover{ CoverId=3,BookId=1, DesignIdeas="A big ear in the clocks?", DigitalOnly=false}
     };
 
     modelBuilder.Entity<Cover>().HasData(someCovers);
