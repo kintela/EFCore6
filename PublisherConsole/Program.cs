@@ -11,7 +11,23 @@ using (PubContext context = new PubContext())
 
 PubContext _context = new PubContext();
 
-//ConnectExistingArtistAndCoverObjects();
+GetAllBooksWithTheirCovers();
+
+void GetAllBooksWithTheirCovers()
+{
+  var booksAndCovers = _context.Books.Include(b => b.Cover).ToList();
+  booksAndCovers.ForEach(book => {
+    Console.WriteLine(
+      book.Title +
+      (book.Cover==null
+        ? ": No cover yet"
+        : ": " + book.Cover.DesignIdeas
+
+      ));
+  });
+
+  Console.ReadLine();
+}
 
 void ReassignCover()
 {
