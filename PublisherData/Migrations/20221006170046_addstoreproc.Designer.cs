@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PublisherData;
 
@@ -10,9 +11,10 @@ using PublisherData;
 namespace PublisherData.Migrations
 {
     [DbContext(typeof(PubContext))]
-    partial class PubContextModelSnapshot : ModelSnapshot
+    [Migration("20221006170046_addstoreproc")]
+    partial class addstoreproc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
@@ -33,7 +35,7 @@ namespace PublisherData.Migrations
 
                     b.HasKey("ArtistId");
 
-                    b.ToTable("Artists", (string)null);
+                    b.ToTable("Artists");
 
                     b.HasData(
                         new
@@ -72,7 +74,7 @@ namespace PublisherData.Migrations
 
                     b.HasKey("AuthorId");
 
-                    b.ToTable("Authors", (string)null);
+                    b.ToTable("Authors");
 
                     b.HasData(
                         new
@@ -136,7 +138,7 @@ namespace PublisherData.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Books", (string)null);
+                    b.ToTable("Books");
 
                     b.HasData(
                         new
@@ -210,7 +212,7 @@ namespace PublisherData.Migrations
                     b.HasIndex("BookId")
                         .IsUnique();
 
-                    b.ToTable("Covers", (string)null);
+                    b.ToTable("Covers");
 
                     b.HasData(
                         new
@@ -253,7 +255,7 @@ namespace PublisherData.Migrations
 
                     b.HasIndex("CoverId");
 
-                    b.ToTable("CoverAssignment", (string)null);
+                    b.ToTable("CoverAssignment");
                 });
 
             modelBuilder.Entity("PublisherDomain.Book", b =>
