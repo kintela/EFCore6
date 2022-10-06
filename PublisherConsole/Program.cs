@@ -11,7 +11,33 @@ using (PubContext context = new PubContext())
 
 PubContext _context = new PubContext();
 
-GetAllBooksWithTheirCovers();
+//ConcatenatedRawSql_Unsafe();
+ConcatenatedRawSql_Safe();
+
+void ConcatenatedRawSql_Safe()
+{
+  var lastNameStart = "L";
+  var authors = _context.Authors
+    .FromSqlRaw($"SELECT * FROM authors WHERE lastname LIKE '{0}%'", lastNameStart)
+    .OrderBy(a => a.LastName).TagWith("Formatted_Safe").ToList();
+}
+
+
+void ConcatenatedRawSql_Unsafe()
+{
+  var lastNameStart = "L";
+  string sql = $"SELECT * FROM authors WHERE lastname LIKE '{lastNameStart}%'";
+  var authors = _context.Authors
+    .FromSqlRaw(sql)
+    .OrderBy(a => a.LastName).TagWith("Interpolatted_Unsafe").ToList();
+}
+
+void SimpleRawSQL()
+{
+  var authors = _context.Authors.FromSqlRaw("select * from authors")
+    .Include(a=>a.Books)
+    .ToList();
+}
 
 void GetAllBooksWithTheirCovers()
 {
