@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+//using Microsoft.Extensions.Logging;
 using PublisherDomain;
 
 namespace PublisherData;
@@ -10,14 +10,20 @@ public class PubContext:DbContext
   public DbSet<Artist> Artists { get; set; }
   public DbSet<Cover> Covers { get; set; }
 
+  public PubContext(DbContextOptions<PubContext> options)
+    :base(options)
+  {
+
+  }
+
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
   {
     //optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=PubDatabase")
-    optionsBuilder.UseSqlite("Data Source=PubDatabase.db")
+    /*optionsBuilder.UseSqlite("Data Source=PubDatabase.db")
       .LogTo(Console.WriteLine,
         new[] { DbLoggerCategory.Database.Command.Name},
         LogLevel.Information)
-      .EnableSensitiveDataLogging();
+      .EnableSensitiveDataLogging();*/
   }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
