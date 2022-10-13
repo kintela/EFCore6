@@ -12,7 +12,7 @@ using (PubContext context = new PubContext())
 PubContext _context = new PubContext();
 
 //ConcatenatedRawSql_Unsafe();
-ConcatenatedRawSql_Safe();
+//ConcatenatedRawSql_Safe();
 
 void ConcatenatedRawSql_Safe()
 {

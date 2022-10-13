@@ -10,6 +10,11 @@ public class PubContext:DbContext
   public DbSet<Artist> Artists { get; set; }
   public DbSet<Cover> Covers { get; set; }
 
+  public PubContext()
+  {
+
+  }
+
   public PubContext(DbContextOptions<PubContext> options)
     :base(options)
   {

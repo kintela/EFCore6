@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using PublisherData;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,7 @@ builder.Services.AddDbContext<PubContext>(
 	opt=>opt.UseSqlite(builder.Configuration.GetConnectionString("PubConnection"))
 	.EnableSensitiveDataLogging()
 	.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+
 
 var app = builder.Build();
 
