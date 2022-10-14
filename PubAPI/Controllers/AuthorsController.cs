@@ -21,25 +21,36 @@ namespace PubAPI.Controllers
             _context = context;
         }
 
+        private readonly DataLogic _dl;
+
+        public AuthorsController(DataLogic dl)
+        {
+          _dl = dl;
+        }
+
         // GET: api/Authors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Author>>> GetAuthors()
+        public async Task<ActionResult<IEnumerable<AuthorDTO>>> GetAuthors()
         {
-            return await _context.Authors.ToListAsync();
+            //return await _context.Authors.ToListAsync();
+
+            var authorDTOList=await _dl.GetAllAuthors();
+
+            return authorDTOList;
         }
 
         // GET: api/Authors/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Author>> GetAuthor(int id)
+        public async Task<ActionResult<AuthorDTO>> GetAuthorById(int id)
         {
-            var author = await _context.Authors.FindAsync(id);
+            var authorDTO = await _dl.GetAuthorById(id);
 
-            if (author == null)
+            if (authorDTO == null)
             {
                 return NotFound();
             }
 
-            return author;
+            return authorDTO;
         }
 
         // PUT: api/Authors/5

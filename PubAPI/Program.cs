@@ -18,6 +18,8 @@ builder.Services.AddDbContext<PubContext>(
 	.EnableSensitiveDataLogging()
 	.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
+builder.Services.AddScoped<PubAPI.DataLogic>();
+
 
 var app = builder.Build();
 

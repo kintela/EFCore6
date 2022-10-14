@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Microsoft.EntityFrameworkCore;
+using PublisherConsole;
 using PublisherData;
 using PublisherDomain;
 
@@ -11,8 +12,21 @@ using (PubContext context = new PubContext())
 
 PubContext _context = new PubContext();
 
-//ConcatenatedRawSql_Unsafe();
-//ConcatenatedRawSql_Safe();
+AddSomeAuthors();
+
+void AddSomeAuthors()
+{
+	var authorList = new List<ImportAuthorDTO>()
+			{
+				new ImportAuthorDTO("Ruth", "Ozeki"),
+				new ImportAuthorDTO("Sofia","Segovia"),
+				new ImportAuthorDTO("Ursula K.", "LeGuin"),
+				new ImportAuthorDTO("Hugh", "Howey"),
+				new ImportAuthorDTO("Isabelle", "Allende")
+			};
+  var dl = new DataLogic();
+  dl.ImportAuthors(authorList);
+}
 
 void ConcatenatedRawSql_Safe()
 {
@@ -327,7 +341,7 @@ void GetAuthorsWithBooks()
   }
 }
 
-void AddSomeAuthors()
+void AddSomeAuthorsOLD()
 {
   _context.Authors.Add(new Author { FirstName ="Rhoda", LastName="Lerman"});
 	_context.Authors.Add(new Author { FirstName = "Don", LastName = "Jones" });
