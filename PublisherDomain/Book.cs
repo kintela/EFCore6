@@ -10,6 +10,8 @@ namespace PublisherDomain
       public Author Author { get; set; }
       public int AuthorId { get; set; }
       public Cover Cover { get; set; }
+
+      public BookGenre Genre { get; set; }
   }
 }
 

@@ -12,7 +12,7 @@ using (PubContext context = new PubContext())
 
 PubContext _context = new PubContext();
 
-AddSomeAuthors();
+//AddSomeAuthors();
 
 void AddSomeAuthors()
 {

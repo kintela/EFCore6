@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 //using Microsoft.Extensions.Logging;
 using PublisherDomain;
+using System.Drawing;
 
 namespace PublisherData;
 public class PubContext:DbContext
@@ -36,6 +37,10 @@ public class PubContext:DbContext
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
+    modelBuilder.Entity<Book>().Property(b => b.Genre).HasConversion<string>();
+
+    modelBuilder.Entity<Cover>().Property(c => c.PrimaryColor).HasConversion(c => c.ToString(), s => Color.FromName(s));
+
     modelBuilder.Entity<Author>().HasData(
       new Author { AuthorId = 1, FirstName = "Rhoda", LastName = "Lerman" });
 
@@ -49,12 +54,12 @@ public class PubContext:DbContext
     modelBuilder.Entity<Author>().HasData(authorList);
 
     var someBooks = new Book[] {
-      new Book{ BookId=1, AuthorId=1, Title="In God's Ear", PublishDate=new DateTime(1989, 3,1)},
-			new Book{ BookId=2, AuthorId=2, Title="A Tale For the Time Being", PublishDate=new DateTime(2013, 12,31)},
-			new Book{ BookId=3, AuthorId=3, Title="The left hand of Darkness", PublishDate=new DateTime(1969, 3,1)},
-      new Book{ BookId=4, AuthorId=1, Title="TAlabaster", PublishDate=new DateTime(2000, 3,1)},
-      new Book{ BookId=5, AuthorId=3, Title="Wool", PublishDate=new DateTime(2010, 3,1)},
-      new Book{ BookId=6, AuthorId=2, Title="Shift", PublishDate=new DateTime(2015, 3,1)},
+      new Book{ BookId=1, AuthorId=1, Title="In God's Ear", PublishDate=new DateTime(1989, 3,1), Genre=BookGenre.Adventure},
+			new Book{ BookId=2, AuthorId=2, Title="A Tale For the Time Being", PublishDate=new DateTime(2013, 12,31), Genre=BookGenre.Mystery},
+			new Book{ BookId=3, AuthorId=3, Title="The left hand of Darkness", PublishDate=new DateTime(1969, 3,1), Genre=BookGenre.History},
+      new Book{ BookId=4, AuthorId=1, Title="TAlabaster", PublishDate=new DateTime(2000, 3,1), Genre=BookGenre.Adventure},
+      new Book{ BookId=5, AuthorId=3, Title="Wool", PublishDate=new DateTime(2010, 3,1), Genre=BookGenre.ScienceFiction},
+      new Book{ BookId=6, AuthorId=2, Title="Shift", PublishDate=new DateTime(2015, 3,1), Genre = BookGenre.Memoir}
     };
 
     modelBuilder.Entity<Book>().HasData(someBooks);
@@ -67,9 +72,9 @@ public class PubContext:DbContext
     modelBuilder.Entity<Artist>().HasData(someArtists);
 
     var someCovers = new Cover[] {
-      new Cover{ CoverId=1,BookId=3, DesignIdeas="How about a left hand in the dark?", DigitalOnly=false},
-      new Cover{ CoverId=2,BookId=2, DesignIdeas="Should we put a clock?", DigitalOnly=true},
-      new Cover{ CoverId=3,BookId=1, DesignIdeas="A big ear in the clocks?", DigitalOnly=false}
+      new Cover{ CoverId=1,BookId=3, DesignIdeas="How about a left hand in the dark?", DigitalOnly=false, PrimaryColor=Color.Aquamarine},
+      new Cover{ CoverId=2,BookId=2, DesignIdeas="Should we put a clock?", DigitalOnly=true, PrimaryColor=Color.Fuchsia},
+      new Cover{ CoverId=3,BookId=1, DesignIdeas="A big ear in the clocks?", DigitalOnly=false, PrimaryColor=Color.Red}
     };
 
     modelBuilder.Entity<Cover>().HasData(someCovers);
